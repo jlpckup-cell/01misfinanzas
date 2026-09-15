@@ -1,5 +1,5 @@
-const CACHE='bolsillo-v3';
-const ASSETS=['./','./index.html','./styles.css','./app.js','./model.js','./icon.svg','./icon-192.png','./icon-512.png','./manifest.webmanifest'];
+const CACHE='bolsillo-v4';
+const ASSETS=['./','./index.html','./styles.css','./app.js','./model.js','./welcome.js','./welcome.webp','./welcome-spending.webp','./icon.svg','./icon-192.png','./icon-512.png','./manifest.webmanifest'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS))));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('bolsillo-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(event.request.method!=='GET'||url.origin!==self.location.origin)return;const known=ASSETS.map(p=>new URL(p,self.registration.scope).href);if(!known.includes(url.href)&&event.request.mode!=='navigate')return;event.respondWith(fetch(event.request).then(response=>{if(response.ok&&!response.redirected){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy));}return response;}).catch(()=>caches.match(event.request).then(cached=>cached||(event.request.mode==='navigate'?caches.match(new URL('./index.html',self.registration.scope).href):Response.error()))));});

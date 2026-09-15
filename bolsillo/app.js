@@ -52,4 +52,4 @@ document.addEventListener('change',async e=>{if(e.target.id==='month'){if(/^\d{4
 document.addEventListener('input',e=>{if(e.target.id==='search'){const pos=e.target.selectionStart;query=e.target.value;render();const s=document.querySelector('#search');s.focus();s.setSelectionRange(pos,pos);}});
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;});
 window.addEventListener('storage',e=>{if(e.key!==KEY)return;try{data=e.newValue?validate(JSON.parse(e.newValue)):blank();loadError=false;modal.close();render();toast('Datos actualizados desde otra pestaña');}catch{loadError=true;render();}});
-render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();window.bolsilloReady=true;window.dispatchEvent(new Event('bolsillo-ready'));if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});

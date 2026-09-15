@@ -34,3 +34,5 @@ Al cambiar los recursos, incrementa la versión `CACHE` en `sw.js`. La aplicaci�
 ## Presupuestos mixtos
 
 Cada categoría, incluido el ahorro, permite elegir porcentaje del saldo inicial o cantidad fija en euros. Los porcentajes se recalculan al modificar el saldo inicial; las cantidades fijas se mantienen. Copiar el mes anterior conserva el modo de cada categoría. Las copias antiguas siguen siendo compatibles: los porcentajes existentes conservan su modo y los importes sin porcentaje se tratan como fijos.
+
+Al fijar una categoría en 0 €, se reparte el saldo inicial restante después de las cantidades fijas entre las categorías porcentuales, proporcionalmente a sus pesos. Se ajustan los céntimos por restos mayores. Si no quedan porcentajes positivos, el dinero queda sin asignar. Si los fijos superan el saldo, los porcentajes reciben cero y se mantiene el aviso. Cada mes nuevo parte de la propuesta por defecto; los ajustes de otros meses no se arrastran automáticamente.

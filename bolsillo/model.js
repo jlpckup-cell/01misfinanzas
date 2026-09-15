@@ -23,4 +23,14 @@ export function initialPlan(m){const next={...m,budgetRules:Object.fromEntries(c
 
 export function budgetRule(m,id){return m.budgetRules?.[id]??(m.budgetShares&&Object.hasOwn(m.budgetShares,id)?{mode:'percent',value:m.budgetShares[id]}:{mode:'fixed',value:m.budgets[id]||0});}
 export function rulesFor(m){return Object.fromEntries(categories.map(c=>[c.id,{...budgetRule(m,c.id)}]));}
-export function applyRules(m,rules=rulesFor(m)){m.budgetRules=structuredClone(rules);m.budgets=Object.fromEntries(categories.map(c=>{const r=rules[c.id]||{mode:'fixed',value:0};return [c.id,r.mode==='fixed'?r.value:Math.floor(Math.max(0,m.opening)*Math.round(r.value*100)/10000)];}));delete m.budgetShares;m.planVersion=3;return m;}
+export function isRedistributed(rules){return Object.values(rules).some(r=>r.mode==='fixed'&&r.value===0);}
+export function applyRules(m,rules=rulesFor(m)){
+ m.budgetRules=structuredClone(rules);
+ const fixed=categories.reduce((sum,c)=>sum+(rules[c.id]?.mode==='fixed'?rules[c.id].value:0),0);
+ const pool=Math.max(0,m.opening-fixed),redistribute=isRedistributed(rules);
+ const weighted=categories.filter(c=>rules[c.id]?.mode==='percent'&&rules[c.id].value>0);
+ const totalWeight=weighted.reduce((sum,c)=>sum+Math.round(rules[c.id].value*100),0);
+ m.budgets=Object.fromEntries(categories.map(c=>{const r=rules[c.id]||{mode:'fixed',value:0};return[c.id,r.mode==='fixed'?r.value:redistribute?(totalWeight?Math.floor(pool*Math.round(r.value*100)/totalWeight):0):Math.floor(Math.max(0,m.opening)*Math.round(r.value*100)/10000)];}));
+ if(redistribute&&totalWeight){let cents=pool-weighted.reduce((sum,c)=>sum+m.budgets[c.id],0);const ranked=[...weighted].sort((a,b)=>(pool*Math.round(rules[b.id].value*100)%totalWeight)-(pool*Math.round(rules[a.id].value*100)%totalWeight));for(let i=0;i<cents;i++)m.budgets[ranked[i%ranked.length].id]++;}
+ delete m.budgetShares;m.planVersion=3;return m;
+}

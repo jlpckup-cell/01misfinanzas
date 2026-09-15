@@ -30,3 +30,7 @@ Android: Chrome → menú → Instalar aplicación / Añadir a pantalla de inici
 ## Actualizaciones
 
 Al cambiar los recursos, incrementa la versión `CACHE` en `sw.js`. La aplicación utiliza red primero y caché como respaldo. No almacena datos financieros en la caché de archivos.
+
+## Presupuestos mixtos
+
+Cada categoría, incluido el ahorro, permite elegir porcentaje del saldo inicial o cantidad fija en euros. Los porcentajes se recalculan al modificar el saldo inicial; las cantidades fijas se mantienen. Copiar el mes anterior conserva el modo de cada categoría. Las copias antiguas siguen siendo compatibles: los porcentajes existentes conservan su modo y los importes sin porcentaje se tratan como fijos.

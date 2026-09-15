@@ -6,7 +6,7 @@ Aplicación de finanzas personales en español. Sin dependencias ni proceso de c
 
 - Saldo inicial independiente por mes; ingresos y gastos con importes en céntimos.
 - Navegación mensual, edición y eliminación de movimientos.
-- Diez categorías y límites mensuales editables, propuesta inicial y copia del mes anterior.
+- Diez categorías de gasto y una meta de ahorro y límites mensuales editables, porcentajes iniciales automáticos y copia del mes anterior.
 - Resumen y distribución real de gastos por categoría.
 - Copias JSON con validación y restauración explícita.
 - PWA con manifest, iconos y caché sin conexión tras la primera carga compatible.
@@ -19,7 +19,7 @@ Para servirla localmente: `python3 -m http.server 8080 --directory dist` y abre 
 
 ## Datos
 
-Los datos se almacenan en localStorage con la clave `bolsillo.personal.v1`, separados de otras aplicaciones. Cada mes conserva su saldo inicial, presupuestos y movimientos. No hay arrastre automático del saldo: introduce el saldo real al comenzar cada mes. Los presupuestos no son gastos y no descuentan saldo. La propuesta distribuye el 95 % del saldo inicial más ingresos y deja el resto sin asignar; es una plantilla editable, no asesoramiento financiero.
+Los datos se almacenan en localStorage con la clave `bolsillo.personal.v1`, separados de otras aplicaciones. Cada mes conserva su saldo inicial, presupuestos y movimientos. No hay arrastre automático del saldo: introduce el saldo real al comenzar cada mes. Los presupuestos no son gastos y no descuentan saldo. La propuesta distribuye el 95 % del saldo inicial para gastos y el 5 % como objetivo de ahorro, sin descontarlo del saldo; es una plantilla editable, no asesoramiento financiero.
 
 Los datos no se sincronizan entre dispositivos, navegadores ni dominios. Exporta una copia antes de cambiar de dirección web o borrar los datos del navegador. Restaurar reemplaza todos los meses, tras confirmación. No se envían datos financieros a GitHub ni al alojamiento. No hay conexión bancaria ni contraseña propia.
 
